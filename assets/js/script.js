@@ -235,3 +235,35 @@ bottoneEsporta.addEventListener("click", (e) => {
       encodeURIComponent(JSON.stringify(libri)),
   );
 });
+
+function mostraSpinner() {
+  document.getElementById("spinner").classList.remove("hidden");
+  document.getElementById("errore").classList.add("hidden");
+}
+
+function nascondiSpinner() {
+  document.getElementById("spinner").classList.add("hidden");
+}
+
+function mostraErrore(msg) {
+  document.getElementById("errore").textContent = msg;
+  document.getElementById("errore").classList.remove("hidden");
+}
+
+function cerca() {
+  mostraSpinner();
+  const url = `https://openlibrary.org/search.json?q=${input.value}&limit=10`;
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Errore HTTP " + response.status);
+      }
+      return response.json();
+    })
+
+    .then((dati) => renderRisultati(dati.docs))
+    .catch((err) =>
+      mostraErrore("Impossibile completare la ricerca: " + err.message),
+    )
+    .finally(() => nascondiSpinner());
+}
