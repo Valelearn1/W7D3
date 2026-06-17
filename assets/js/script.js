@@ -267,3 +267,48 @@ function cerca() {
     )
     .finally(() => nascondiSpinner());
 }
+
+function renderRisultati(docs) {
+  if (docs.length === 0) {
+    const ul = document.getElementById("risultati");
+    const newLi = document.createElement("li");
+    newLi.classList.add("info");
+    newLi.textContent = "Nessun risultato.";
+
+    ul.appendChild(newLi);
+  } else {
+    docs.forEach(doc) => {
+      const ul = document.getElementById("risultati");
+      const newLi = document.createElement("li");
+
+      const titolo = doc.title;
+      const autore =
+        doc.author_name && doc.author_name[0]
+          ? doc.author_name[0]
+          : "Autore sconosciuto"; 
+          // se author_name esiste e il primo elemento dell'array esiste, 
+          // allora usa quel primo elemento, altrimenti scrivi Autore sconosciuto
+
+      const anno = doc.first_publish_year ? doc.first_publish_year : "?"; // se first_publish_year esiste, usalo, altrimenti metti ?
+
+      const spanTitolo = document.createElement("span");
+      spanTitolo.classList.add("titolo");
+      spanTitolo.textContent = `${titolo}`;
+
+      const meta = document.createElement("div");
+      meta.classList.add("meta");
+      meta.textContent = `${autore} - ${anno}`;
+
+      const btnData = document.createElement("button");
+      btnData.dataset.titolo = titolo;
+      btnData.dataset.autore = autore;
+      btnData.dataset.anno = anno;
+      btnData.textContent = "Aggiungi";
+
+      newLi.appendChild(spanTitolo);
+      newLi.appendChild(meta);
+      newLi.appendChild(btnData);
+      ul.appendChild(newLi);
+    });
+  }
+}
