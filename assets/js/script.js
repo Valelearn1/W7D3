@@ -312,3 +312,17 @@ function renderRisultati(docs) {
     });
   }
 }
+
+let timeoutId; // variabile per il debounce
+
+const cerca = document.getElementById("cerca");
+cerca.addEventListener("input", (e) => {
+  e.target.value.trim();
+  if (query.length < 3) {
+    document.getElementById("risultati").innerHTML;
+    return;
+  } else {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => cerca(query), 400);
+  }
+})
