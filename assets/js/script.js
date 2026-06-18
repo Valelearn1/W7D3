@@ -121,51 +121,6 @@ function renderLibri() {
 renderLibri();
 
 // === Eventi ===
-const selectFormato = document.getElementById("formato"); // trova il menu a tendina
-const campoDimensione = document.getElementById("campo-dimensione"); // trova il campo MB (che è nascosto)
-
-selectFormato.addEventListener("change", (e) => {
-  if (e.target.value === "digitale") {
-    campoDimensione.removeAttribute("hidden"); // mostra il campo MB
-  } else {
-    campoDimensione.setAttribute("hidden", ""); // nasconde il campo MB
-  }
-});
-
-const form = document.getElementById("aggiungi-libro"); // trova il form
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault(); // blocca il ricaricamento della pagina
-
-  // leggo i valori scritti nei campi
-  const titolo = document.getElementById("titolo").value;
-  const autore = document.getElementById("autore").value;
-  const anno = parseInt(document.getElementById("anno").value); // parseInt converte la stringa in numero intero
-  const formato = document.getElementById("formato").value;
-  const dimensione = parseFloat(document.getElementById("dimensione").value); // parseFloat per numeri con virgola (es. 2.4)
-
-  // creo il libro giusto in base al formato scelto
-  let nuovoLibro;
-  if (formato === "digitale") {
-    nuovoLibro = new LibroDigitale(
-      titolo,
-      autore,
-      anno,
-      false,
-      formato,
-      dimensione,
-    );
-  } else {
-    nuovoLibro = new Libro(titolo, autore, anno, false);
-  }
-
-  libri.push(nuovoLibro); // aggiungo il nuovo libro all'array
-  salvaLibri(); // per salvare al submit
-  renderLibri(); // ridisegno la lista a schermo
-
-  e.target.reset(); // svuota tutti i campi del form
-  campoDimensione.setAttribute("hidden", ""); // nasconde di nuovo il campo MB
-});
 
 const ul = document.getElementById("lista-libri"); // trova la lista
 
