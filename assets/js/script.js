@@ -277,7 +277,7 @@ function renderRisultati(docs) {
 
     ul.appendChild(newLi);
   } else {
-    docs.forEach(doc) => {
+    docs.forEach((doc) => {
       const ul = document.getElementById("risultati");
       const newLi = document.createElement("li");
 
@@ -285,9 +285,9 @@ function renderRisultati(docs) {
       const autore =
         doc.author_name && doc.author_name[0]
           ? doc.author_name[0]
-          : "Autore sconosciuto"; 
-          // se author_name esiste e il primo elemento dell'array esiste, 
-          // allora usa quel primo elemento, altrimenti scrivi Autore sconosciuto
+          : "Autore sconosciuto";
+      // se author_name esiste e il primo elemento dell'array esiste,
+      // allora usa quel primo elemento, altrimenti scrivi Autore sconosciuto
 
       const anno = doc.first_publish_year ? doc.first_publish_year : "?"; // se first_publish_year esiste, usalo, altrimenti metti ?
 
@@ -315,14 +315,34 @@ function renderRisultati(docs) {
 
 let timeoutId; // variabile per il debounce
 
-const cerca = document.getElementById("cerca");
-cerca.addEventListener("input", (e) => {
-  e.target.value.trim();
+const inputCerca = document.getElementById("cerca");
+inputCerca.addEventListener("input", (e) => {
+  const query = e.target.value.trim(); // per salvare trim, bisogna assegnarlo a una variabile
   if (query.length < 3) {
-    document.getElementById("risultati").innerHTML;
+    document.getElementById("risultati").innerHTML = "";
     return;
   } else {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => cerca(query), 400);
   }
-})
+});
+
+const ulRisultati = document.getElementById("risultati");
+ulRisultati.addEventListener("click", (e) => {
+  const bottone = e.target.closest("button[data-titolo]");
+  if (!bottone) {
+    return;
+  }
+
+  const titolo = bottone.dataset.titolo;
+  const autore = bottone.dataset.autore;
+  const anno = parseInt(bottone.dataset.anno);
+
+  const newBook = new Libro(titolo, autore, anno, false);
+  libri.push(newBook);
+  salvaLibri();
+  renderLibri();
+
+  bottone.textContent = "✓ Aggiunto";
+  bottone.setAttribute("disabled", "");
+});
